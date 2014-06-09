@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tic_Tac_Toe;
 
@@ -24,7 +23,8 @@ namespace TestTicTacToe
         [TestMethod]
         public void CanGoFirst()
         {
-            Assert.AreEqual(0, _computer.GetPlayerMove(new Board(), 1, aiP));
+            var corners = new List<int> { 0, 2, 6, 8 };
+            Assert.IsTrue(corners.Contains(_computer.GetPlayerMove(new Board(new List<string> { "1", "2", "3", "4", "X", "6", "7", "8", "9" }), 1, aiP)));
         }
 
         [TestMethod]
@@ -125,25 +125,25 @@ namespace TestTicTacToe
         }
 
         [TestMethod]
-        public void CanBlockTroysWin()
+        public void CanBlockOn6CorrectlyOnTurn8()
         {
             Assert.AreEqual(6, _computer.GetPlayerMove(new Board(new List<string> { "O", "X", "X", "X", "X", "O", "7", "O", "9" }), 8, aiP));
         }
 
         [TestMethod]
-        public void CanBlockTroysWinOpposite()
+        public void CanBlockOn8CorrectlyOnTurn8()
         {
             Assert.AreEqual(8, _computer.GetPlayerMove(new Board(new List<string> { "X", "X", "O", "O", "X", "X", "7", "O", "9" }), 8, aiP));
         }
 
         [TestMethod]
-        public void CanBlockTroysWinOppositeOnTop()
+        public void CanBlockOn0CorrectlyOnTurn8()
         {
             Assert.AreEqual(0, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "3", "X", "X", "O", "O", "X", "X" }), 8, aiP));
         }
 
         [TestMethod]
-        public void CanBlockTroysWinOnTop()
+        public void CanBlockOn2CorrectlyOnTurn8()
         {
             Assert.AreEqual(2, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "3", "O", "X", "X", "X", "X", "O" }), 8, aiP));
         }

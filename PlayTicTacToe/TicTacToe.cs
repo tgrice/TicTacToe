@@ -16,20 +16,10 @@ namespace PlayTicTacToe
                 Console.Title = "Tic-Tac-Toe";
                 Console.Clear();
                 Console.WriteLine("Please enter the number of players (0-2): ");
-                var numberOfPlayers = Console.ReadLine();
-                int x;
-                while (!Int32.TryParse(numberOfPlayers, out x) || numberOfPlayers == null)
-                {
-                    Console.WriteLine("Not a valid Number, Please Try Again: ");
-                    numberOfPlayers = Console.ReadLine();
-                }
-                while (Convert.ToInt32(numberOfPlayers) > 2 || Convert.ToInt32(numberOfPlayers) < 0)
-                {
-                    Console.WriteLine("Not a valid response, please try again: ");
-                    numberOfPlayers = Console.ReadLine();
-                }
-            
-                if (numberOfPlayers == "0")
+                var numberOfHumanPlayers = GetCorrectNumberOfPlayers();
+
+
+                if (numberOfHumanPlayers == 0)
                 {
                     GameCon = new GameController(
                         new WinCondition(),
@@ -37,7 +27,7 @@ namespace PlayTicTacToe
                         new AIPlayer(aimm), 
                         new ConsoleIO());
                 }
-                else if (numberOfPlayers == "1")
+                else if (numberOfHumanPlayers == 1)
                 {
                     GameCon = new GameController(
                         new WinCondition(),
@@ -56,5 +46,30 @@ namespace PlayTicTacToe
                 play = GameCon.Run();
             }
         }
+
+        private static string GetUserInputAsInt()
+        {
+            var result = Console.ReadLine();
+            int x;
+            while (!Int32.TryParse(result, out x) || result == null)
+            {
+                Console.WriteLine("Not a valid Number, Please Try Again: ");
+                result = Console.ReadLine();
+            }
+            return result;
+        }
+
+        private static int GetCorrectNumberOfPlayers()
+        {
+            var numberOfPlayers = Convert.ToInt32(GetUserInputAsInt());
+            while (numberOfPlayers < 0 || numberOfPlayers > 2)
+            {
+                Console.WriteLine("Invalid number of players, please try again: ");
+                numberOfPlayers = Convert.ToInt32(GetUserInputAsInt());
+            }
+            return numberOfPlayers;
+        }
+
+       
     }
 }

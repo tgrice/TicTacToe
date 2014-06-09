@@ -6,8 +6,8 @@
         private IPlayer _player1;
         private IPlayer _player2;
         private ITicTacToeIO _gameIO;
-
         private Board _gameBoard;
+
         private int _turnNumber;
         private IPlayer _currentTurnPlayer;
         private string _feedback;
@@ -28,7 +28,7 @@
         public bool Run()
         {
             SetupGame();
-            while (!EndOfGame())
+            while (!IsEndOfGame())
             {
                 PrintBoard();
                 var guess = GetGuess();
@@ -41,7 +41,7 @@
             return Rematch();
         }
 
-        public void SetupGame()
+        private void SetupGame()
         {
             _gameIO.PrintRules();
             _player1.Symbol = "X";
@@ -50,7 +50,7 @@
             _turnNumber = 1;
         }
 
-        private bool EndOfGame()
+        private bool IsEndOfGame()
         {
             if (_player1.Positions.Count + _player2.Positions.Count == 9)
             {
@@ -68,6 +68,7 @@
 
         private int GetGuess()
         {
+            System.Threading.Thread.Sleep(500);
             return _currentTurnPlayer.MakeMove(_gameBoard, _turnNumber, _currentTurnPlayer);
         }
 

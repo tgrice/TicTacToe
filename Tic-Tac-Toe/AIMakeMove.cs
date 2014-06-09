@@ -22,7 +22,7 @@ namespace Tic_Tac_Toe
             {8, new List<List<int>>{new List<int>{0, 4}, new List<int>{2, 5}, new List<int>{6, 7}}} 
         };
 
-        private readonly Dictionary<int, List<List<int>>> _preventSetupMoves = new Dictionary<int, List<List<int>>>
+        private readonly Dictionary<int, List<List<int>>> _setupMoves = new Dictionary<int, List<List<int>>>
         {
             {0, new List<List<int>>{new List<int>{1, 3}}},
             {1, new List<List<int>>{new List<int>{2, 3},new List<int>{5, 0}}},
@@ -40,7 +40,7 @@ namespace Tic_Tac_Toe
             _turnPlayerSymbol = turnPlayer.Symbol;
             SetNonTurnPlayerSymbol(_turnPlayerSymbol);
             if (turnNumber == 1)
-                PlayFirstTurn();
+                return PlayFirstTurn();
             if (turnNumber == 2)
                 return PlayTurn2(board);
             if (turnNumber > 2 && turnNumber < 6)
@@ -75,22 +75,53 @@ namespace Tic_Tac_Toe
 
         private int PlayTurns2Through5(Board board)
         {
-            var move = FindBestMove(board, _moves, _turnPlayerSymbol);
+            var move = CheckForWinningMove(board);
             if (IsLegalMove(move))
                 return move;
-            move = FindBestMove(board, _moves, _nonTurnPlayerSymbol);
+            move = CheckForBlockingMove(board);
             if (IsLegalMove(move))
                 return move;
-            move = FindBestMove(board, _preventSetupMoves, _nonTurnPlayerSymbol);
+            move = CheckForBlockingSetupMove(board);
             if (IsLegalMove(move))
                 return move;
-            move = FindBestMove(board, _preventSetupMoves, _turnPlayerSymbol);
+            move = CheckForSetUpMove(board);
             if (IsLegalMove(move))
                 return move;
             return MakeNextBestMove(board);
         }
 
-        private int FindBestMove(Board board, Dictionary<int, List<List<int>>> movesDictionary, string Symbol)
+        private int PlayTurns6AndAbove(Board board)
+        {
+            var move = CheckForWinningMove(board);
+            if (IsLegalMove(move))
+                return move;
+            move = CheckForBlockingMove(board);
+            if (IsLegalMove(move))
+                return move;
+            return MakeNextBestMove(board);
+        }
+
+        private int CheckForWinningMove(Board board)
+        {
+            return FindBestMove(board, _moves, _turnPlayerSymbol);
+        }
+
+        private int CheckForBlockingMove(Board board)
+        {
+            return FindBestMove(board, _moves, _nonTurnPlayerSymbol);
+        }
+
+        private int CheckForBlockingSetupMove(Board board)
+        {
+            return FindBestMove(board, _setupMoves, _nonTurnPlayerSymbol);
+        }
+
+        private int CheckForSetUpMove(Board board)
+        {
+            return FindBestMove(board, _setupMoves, _turnPlayerSymbol);
+        }
+
+        private int FindBestMove(Board board, Dictionary<int, List<List<int>>> movesDictionary, string symbol)
         {
             foreach (KeyValuePair<int, List<List<int>>> move in movesDictionary)
             {
@@ -99,7 +130,7 @@ namespace Tic_Tac_Toe
 
                 foreach (var possibleBlock in givenPositions)
                 {
-                    if (IsBestMove(board, possibleBlock, possibleMove, Symbol))
+                    if (IsBestMove(board, possibleBlock, possibleMove, symbol))
                         return possibleMove;
                 }
             }
@@ -108,11 +139,6 @@ namespace Tic_Tac_Toe
 
         private bool IsBestMove(Board board, List<int> possibleBlock, int possibleMove, string symbol)
         {
-            //var position1 = board.GetSpecificPositionValue(possibleBlock[0]);
-            //var position2 = board.GetSpecificPositionValue(possibleBlock[1]);
-            //var position3 = board.GetSpecificPositionValue(possibleMove);
-            //var position4 = Convert.ToString(possibleMove + 1);
-            //return position1 == symbol && position2 == symbol && position3 == position4;
             return board.GetSpecificPositionValue(possibleBlock[0]) == symbol
                 && board.GetSpecificPositionValue(possibleBlock[1]) == symbol
                 && board.GetSpecificPositionValue(possibleMove) == Convert.ToString(possibleMove + 1);
@@ -123,26 +149,21 @@ namespace Tic_Tac_Toe
             return move < 9;
         }
 
-        private int PlayTurns6AndAbove(Board board)
-        {
-            var move = FindBestMove(board, _moves, _turnPlayerSymbol);
-            if (IsLegalMove(move))
-                return move;
-            move = FindBestMove(board, _moves, _nonTurnPlayerSymbol);
-            if (IsLegalMove(move))
-                return move;
-            return MakeNextBestMove(board);
-        }
-
         private int MakeNextBestMove(Board board)
         {
             var sides = new List<int> { 0, 2, 6, 8 };
             foreach (var position in sides)
             {
-                if (board.GetSpecificPositionValue(position) != "X" && board.GetSpecificPositionValue(position) != "O" && board.GetSpecificPositionValue(position) != "X")
+                if (IsBoardPositionOpen(board, position) )
                     return position;
             }
             return 9;
+        }
+
+        private bool IsBoardPositionOpen(Board board, int position)
+        {
+            return board.GetSpecificPositionValue(position) != _turnPlayerSymbol 
+                && board.GetSpecificPositionValue(position) != _nonTurnPlayerSymbol;
         }
     }
 }
