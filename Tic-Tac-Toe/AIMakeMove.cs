@@ -108,6 +108,11 @@ namespace Tic_Tac_Toe
 
         private bool IsBestMove(Board board, List<int> possibleBlock, int possibleMove, string symbol)
         {
+            //var position1 = board.GetSpecificPositionValue(possibleBlock[0]);
+            //var position2 = board.GetSpecificPositionValue(possibleBlock[1]);
+            //var position3 = board.GetSpecificPositionValue(possibleMove);
+            //var position4 = Convert.ToString(possibleMove + 1);
+            //return position1 == symbol && position2 == symbol && position3 == position4;
             return board.GetSpecificPositionValue(possibleBlock[0]) == symbol
                 && board.GetSpecificPositionValue(possibleBlock[1]) == symbol
                 && board.GetSpecificPositionValue(possibleMove) == Convert.ToString(possibleMove + 1);

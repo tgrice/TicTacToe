@@ -139,13 +139,13 @@ namespace TestTicTacToe
         [TestMethod]
         public void CanBlockTroysWinOppositeOnTop()
         {
-            Assert.AreEqual(0, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "2", "X", "X", "O", "O", "X", "X" }), 8, aiP));
+            Assert.AreEqual(0, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "3", "X", "X", "O", "O", "X", "X" }), 8, aiP));
         }
 
         [TestMethod]
         public void CanBlockTroysWinOnTop()
         {
-            Assert.AreEqual(2, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "2", "O", "X", "X", "X", "X", "O" }), 8, aiP));
+            Assert.AreEqual(2, _computer.GetPlayerMove(new Board(new List<string> { "1", "O", "3", "O", "X", "X", "X", "X", "O" }), 8, aiP));
         }
     }
 }
