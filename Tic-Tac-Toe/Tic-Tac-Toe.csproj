@@ -47,6 +47,7 @@
     <Compile Include="ITicTacToeIO.cs" />
     <Compile Include="IWinCondition.cs" />
     <Compile Include="HumanPlayer.cs" />
+    <Compile Include="TestGame.cs" />
     <Compile Include="WinCondition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
